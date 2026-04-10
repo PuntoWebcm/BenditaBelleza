@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Selecciona tu Turno | Bendita Belleza</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #fffafb; font-family: 'Segoe UI', sans-serif; }
+        .header-beauty { background: #f8edeb; padding: 40px; text-align: center; color: #d4a373; }
+        .time-slot { 
+            display: block; 
+            padding: 15px; 
+            margin: 10px 0; 
+            border: 1px solid #d4a373; 
+            color: #d4a373; 
+            text-decoration: none; 
+            border-radius: 10px; 
+            transition: 0.3s;
+        }
+        .time-slot:hover { background: #d4a373; color: white; }
+    </style>
+</head>
+<body>
+    <div class="header-beauty">
+        <h1>Reservar {{ servicio.nombre }}</h1>
+        <p>Selecciona el horario que mejor te quede</p>
+    </div>
+
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6 text-center">
+                {% if turnos %}
+                    <h4 class="mb-4 text-muted">Horarios Disponibles:</h4>
+                    {% for t in turnos %}
+                        <a href="{% url 'confirmar_turno' t.id %}" class="time-slot shadow-sm">
+                            <strong>{{ t.fecha|date:"D d M" }}</strong> - {{ t.hora|time:"H:i" }} hs
+                        </a>
+                    {% endfor %}
+                {% else %}
+                    <div class="alert alert-warning">Lo sentimos, no hay turnos disponibles por el momento.</div>
+                    <a href="{% url 'index' %}" class="btn btn-link">Volver al inicio</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
