@@ -7,35 +7,75 @@
     <style>
         body { background-color: #fffafb; font-family: 'Segoe UI', sans-serif; }
         .header-beauty { background: #f8edeb; padding: 40px; text-align: center; color: #d4a373; }
-        .time-slot { 
-            display: block; 
-            padding: 15px; 
-            margin: 10px 0; 
+        
+        .turno-card { 
+            background: white;
+            padding: 25px; 
+            margin: 15px 0; 
             border: 1px solid #d4a373; 
-            color: #d4a373; 
-            text-decoration: none; 
-            border-radius: 10px; 
+            border-radius: 20px; 
             transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(212, 163, 115, 0.1);
         }
-        .time-slot:hover { background: #d4a373; color: white; }
+        
+        .btn-beauty { 
+            background-color: #d4a373; 
+            color: white; 
+            border-radius: 50px; 
+            padding: 12px 25px; 
+            border: none; 
+            font-weight: 600;
+            margin-top: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .btn-beauty:hover { background-color: #bc8a5f; color: white; transform: scale(1.02); }
+        .form-control { border-radius: 10px; border: 1px solid #eee; padding: 10px; }
+        .form-control:focus { border-color: #d4a373; box-shadow: 0 0 0 0.2rem rgba(212, 163, 115, 0.25); }
     </style>
 </head>
 <body>
-    <div class="header-beauty">
-        <h1>Reservar {{ servicio.nombre }}</h1>
-        <p>Selecciona el horario que mejor te quede</p>
+    <div class="header-beauty shadow-sm">
+        <h1 style="font-family: serif;">Reservar {{ servicio.nombre }}</h1>
+        <p>Completa tus datos para agendar el turno</p>
     </div>
 
     <div class="container my-5">
         <div class="row justify-content-center">
-            <div class="col-md-6 text-center">
+            <div class="col-md-5 text-center">
                 {% if turnos %}
                     <h4 class="mb-4 text-muted">Horarios Disponibles:</h4>
+                    
                     {% for t in turnos %}
-                        <a href="{% url 'confirmar_turno' t.id %}" class="time-slot shadow-sm">
-                            <strong>{{ t.fecha|date:"D d M" }}</strong> - {{ t.hora|time:"H:i" }} hs
-                        </a>
+                        <div class="turno-card">
+                            <h5 class="mb-3 text-dark">
+                                <strong>{{ t.fecha|date:"D d M" }}</strong> — {{ t.hora|time:"H:i" }} hs
+                            </h5>
+                            
+                            <form action="{% url 'confirmar_turno' t.id %}" method="POST">
+                                {% csrf_token %}
+                                <div class="mb-2">
+                                    <input type="text" 
+                                           name="nombre_cliente" 
+                                           class="form-control text-center" 
+                                           placeholder="Nombre y Apellido" 
+                                           required>
+                                </div>
+                                <div class="mb-2">
+                                    <input type="tel" 
+                                           name="telefono_cliente" 
+                                           class="form-control text-center" 
+                                           placeholder="WhatsApp (ej: 11 1234 5678)" 
+                                           required>
+                                </div>
+                                
+                                <button type="submit" class="btn-beauty w-100 shadow-sm">
+                                    Reservar Turno
+                                </button>
+                            </form>
+                        </div>
                     {% endfor %}
+
                 {% else %}
                     <div class="alert alert-warning">Lo sentimos, no hay turnos disponibles por el momento.</div>
                     <a href="{% url 'index' %}" class="btn btn-link">Volver al inicio</a>

@@ -19,7 +19,7 @@
 
         body { 
             font-family: 'Poppins', sans-serif; 
-            background-color: var(--main-bg); 
+            background-color: #d53b67; 
             color: var(--text-dark);
             scroll-behavior: smooth;
         }
@@ -37,13 +37,13 @@
 
         /* Hero Section */
         .hero { 
-            background: linear-gradient(rgba(229, 183, 217, 0.804), rgba(198, 160, 123, 0.5)), 
-                        url("{% static 'img/foto2.jpeg' %}");
-            background-size: cover;
-            background-position: center;
-            padding: 140px 0; 
-            text-align: center; 
-        }
+    background: linear-gradient(rgba(229, 183, 217, 0.804), rgba(198, 160, 123, 0.5)), 
+                url("/static/img/foto2.jpeg"); /* Ruta directa sin llaves ni porcentajes */
+    background-size: cover;
+    background-position: center;
+    padding: 140px 0; 
+    text-align: center; 
+}
 
         .hero h2 { font-size: 3.5rem; margin-bottom: 20px; color: #000000; }
 
