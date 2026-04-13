@@ -53,7 +53,11 @@
                                 <strong>{{ t.fecha|date:"D d M" }}</strong> — {{ t.hora|time:"H:i" }} hs
                             </h5>
                             
-                            <form action="{% url 'confirmar_turno' t.id %}" method="POST">
+                            <form action="{% url 'confirmar_turno' t.id %}" 
+                                  method="POST" 
+                                  data-fecha="{{ t.fecha|date:'d/m/Y' }}" 
+                                  data-hora="{{ t.hora|time:'H:i' }}"
+                                  onsubmit="return confirmarReserva(this)">
                                 {% csrf_token %}
                                 <div class="mb-2">
                                     <input type="text" 
@@ -84,5 +88,17 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function confirmarReserva(formElement) {
+            // Extraemos la fecha y hora de los atributos 'data' del formulario
+            const fecha = formElement.getAttribute('data-fecha');
+            const hora = formElement.getAttribute('data-hora');
+            
+            const mensaje = "¿Desea confirmar este turno?\n\n📅 Fecha: " + fecha + "\n⏰ Hora: " + hora + " hs\n\nAl aceptar, se registrará el turno y serás derivado a WhatsApp.";
+            
+            return confirm(mensaje);
+        }
+    </script>
 </body>
 </html>
