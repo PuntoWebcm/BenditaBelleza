@@ -33,3 +33,15 @@ if not settings.DEBUG:
     ]
 else:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+    # --- TRUCO DE EMERGENCIA PARA CREAR ADMIN ---
+from django.contrib.auth.models import User
+try:
+    if not User.objects.filter(username='admin').exists():
+        User.objects.create_superuser('admin', 'admin@bendita.com', 'admin12345')
+        print("---------------------------------------")
+        print("¡USUARIO CREADO: admin / admin12345!")
+        print("---------------------------------------")
+except Exception as e:
+    print(f"Error al crear el admin: {e}")
+# --------------------------------------------
